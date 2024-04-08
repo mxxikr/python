@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h5 class="my-3 border-bottom pb-2">질문등록</h5>
+    <form method="post" class="post-form my-3">
+        {% csrf_token %}
+        <!-- 오류표시 Start -->
+        {% if form.errors %} <!--question_create 함수에서 form.is_vaild()가 실패했을 때 오류를 표시하기 위한 영역 추가-->
+            <div class="alert alert-danger" role="alert">
+            {% for field in form %}
+                {% if field.errors %}
+                <strong>{{ field.label }}</strong>
+                {{ field.errors }}
+                {% endif %}
+            {% endfor %}
+            </div>
+        {% endif %}
+        <!-- 오류표시 End -->
+        <div class="form-group">
+            <label for="subject">제목</label>
+            <input type="text" class="form-control" name="subject" id="subject"
+                value="{{ form.subject.value|default_if_none:'' }}"> <!--오류 발생 시 기존 입력값 유지, 값이 없으면 'None'문자열 표시되는 것을 공백으로 표시하기 위해 사용한 템플릿 필터-->
+        </div>
+        <div class="form-group">
+            <label for="content">내용</label>
+            <textarea class="form-control" name="content"
+                id="content" rows="10">{{ form.content.value|default_if_none:'' }}</textarea>
+        </div>  
+        <button type="submit" class="btn btn-primary">저장하기</button>
+    </form>
+</div>
+{% endblock %}

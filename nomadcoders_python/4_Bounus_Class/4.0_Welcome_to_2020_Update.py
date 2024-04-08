@@ -1,0 +1,1 @@
+# flask : python으로 웹 사이트를 만들 수 있게 해주는 micro-frame work

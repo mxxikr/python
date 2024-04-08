@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<!--ID/PW 입력받아 로그인하는 HTML코드-->
+<div class="container my-3">
+    <div class="row">
+        <div class="col-4"> <!--부트스트랩 그리드 옵션-->
+            <h4>로그인</h4>
+        </div>
+        <div class="col-8 text-right">
+            <span>또는 <a href="{% url 'common:signup' %}">계정을 만드세요.</a></span>
+        </div>
+    </div>
+    <form method="post" class="post-form" action="{% url 'common:login' %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}"> <!-- 로그인 성공후 이동되는 URL -->
+        {% include "form_errors.html" %} <!--form_errors.html 템플릿 파일 포함-->
+        <div class="form-group">
+            <label for="username">사용자ID</label>
+            <input type="text" class="form-control" name="username" id="username"
+                value="{{ form.username.value|default_if_none:'' }}"> <!--입력 항목 username : django.contrib.auth 앱에서 요구하는 필수 항목-->
+        </div>
+        <div class="form-group">
+            <label for="password">비밀번호</label>
+            <input type="password" class="form-control" name="password" id="password"
+                value="{{ form.password.value|default_if_none:'' }}"> <!--입력 항목 password : django.contrib.auth 앱에서 요구하는 필수 항목-->
+        </div>
+        <button type="submit" class="btn btn-primary">로그인</button>
+    </form>
+</div>
+{% endblock %}

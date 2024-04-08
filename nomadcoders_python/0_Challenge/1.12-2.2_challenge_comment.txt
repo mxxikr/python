@@ -1,0 +1,86 @@
+4DAY Challenge 코드 조건 정리
+
+시작 문장 
+Welcome to IsItDown.py!
+Please write a URL or URLS you want to check. (separated by comma)
+
+input값으로  url입력
+
+url 판단 조건
+1. 대소문자 구분 X
+2. ","로 여러개 url 구분
+3. 빈칸 무시
+
+조건2) 
+	조건1이 끝나고 Do you want to start over? y/n 출력    -> 조건1)보다 조건2)함수가 선행되어야함
+	print("Do you want to start over? y/n") -> input값 받아야함
+	**answer = str(input("Do you want to start over? y/n")).lower() 
+	input값이 y일 경우 -> 문자열 y와 일치하는지 확인하기 위해 변수 지정
+	** answer == "y"
+		조건1) 실행
+	input값이 n일 경우
+	** answer == "n"
+		**print("K. bye!")
+		끝
+		**return
+	input값이 y랑 n 둘다 아닐경우
+	**answer != "y" and "n"
+		**print("That's not a vaild answer")
+		조건 2) 재실행
+
+조건1)
+	url 여러개 입력시 , 구분자로 구분, 대소문자 구별, whitespace 무시
+	** urls = str(input()).lower().split(",")
+	여러개 url을 각각 판단 -> for 반복문 사용
+	for url in urls:
+	url일 경우
+		http 포함할 경우
+			url status code = 200일 경우 (정상 작동)
+				{url} is up!
+			url status code 오류값일 경우 (정상 작동 X)
+				{url} is down!
+		http 포함되지않을 경우
+			http 붙여줌
+				url status code = 200일 경우 (정상 작동)
+					{url} is up!
+				url status code 오류값일 경우 (정상 작동 X)
+					{url} is down!
+	url이 아닐 경우
+		{url} is not a vaild URL.
+	
+	끝난 후 조건2) 
+
+
+def question():
+	answer = str(input("Do you want to start over? y/n")).lower()
+	if answer == "y" or "n":
+		if answer == "y":
+			question()
+		elif answer == "n":
+			print("K. bye!")
+			return
+	else:
+		print("That's not a vaild answer")
+		question()
+
+
+def main():
+	os.system('clear')
+	print("Welcome to IsItDown.py!\nPlease write a URL or URLS you want to check. (separated by comma)")
+	urls =  str(input()).lower().split(",")
+	for url in urls:
+		url.strip()
+		if "." in url:
+			if "http" not in url:
+				url = f"http://{url}"
+			try:
+				request = requests.get(url)
+				if request.status == 200:
+					print(url, "is up!")
+				else:
+					print(url, "is down!")
+			except:
+				print(url, "is down!")			
+		else:
+			print(url, "is not a vaild URL.")
+	question()
